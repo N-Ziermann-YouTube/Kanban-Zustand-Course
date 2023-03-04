@@ -1,0 +1,37 @@
+.task {
+  background: white;
+  border-radius: 4px;
+  min-height: 5rem;
+  color: black;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  cursor: move;
+}
+
+.bottomWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.status {
+  font-size: small;
+  background: var(--COLOR-GRAY-LIGHT);
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+
+.ONGOING {
+  background: var(--COLOR-ONGOING);
+}
+
+.DONE {
+  background: var(--COLOR-DONE);
+}
+
+.task img {
+  height: 1.25rem;
+  cursor: pointer;
+}
