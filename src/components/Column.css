@@ -30,7 +30,7 @@
   cursor: pointer;
 }
 
-.titlewrapperbutton: hover {
+.titleWrapper button:hover {
   background: var(--COLOR-GRAY-LIGHT);
 }
 
