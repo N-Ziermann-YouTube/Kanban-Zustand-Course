@@ -1,12 +1,17 @@
+import produce from 'immer';
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { devtools, persist, subscribeWithSelector } from 'zustand/middleware';
 
 const store = (set) => ({
   tasks: [],
   draggedTask: null,
+  tasksInOngoing: 0,
   addTask: (title, state) =>
     set(
-      (store) => ({ tasks: [...store.tasks, { title, state }] }),
+      produce((store) => {
+        store.tasks.push({ title, state });
+      }),
+      //(store) => ({ tasks: [...store.tasks, { title, state }] }),
       false,
       'addTask'
     ),
@@ -34,5 +39,15 @@ const log = (config) => (set, get, api) =>
   );
 
 export const useStore = create(
-  log(persist(devtools(store), { name: 'store' }))
+  subscribeWithSelector(log(persist(devtools(store), { name: 'store' })))
+);
+
+useStore.subscribe(
+  (store) => store.tasks,
+  (newTasks, prevTasks) => {
+    useStore.setState({
+      tasksInOngoing: newTasks.filter((task) => task.state === 'ONGOING')
+        .length,
+    });
+  }
 );

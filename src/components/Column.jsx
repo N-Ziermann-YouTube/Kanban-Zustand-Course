@@ -1,16 +1,18 @@
 import { useStore } from '../store';
 import Task from './Task';
 import './Column.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { shallow } from 'zustand/shallow';
 
 export default function Column({ state }) {
   const [text, setText] = useState('');
   const [open, setOpen] = useState(false);
   const [drop, setDrop] = useState(false);
 
-  const tasks = useStore((store) =>
-    store.tasks.filter((task) => task.state === state)
+  const tasks = useStore(
+    (store) => store.tasks.filter((task) => task.state === state),
+    shallow
   );
   const addTask = useStore((store) => store.addTask);
   const setDraggedTask = useStore((store) => store.setDraggedTask);
@@ -59,4 +61,19 @@ export default function Column({ state }) {
       )}
     </div>
   );
+}
+
+function RefTest() {
+  const ref = useRef();
+
+  useEffect(() => {
+    useStore.subscribe(
+      (store) => store.tasks,
+      (tasks) => {
+        ref.current = tasks;
+      }
+    );
+  }, []);
+
+  return ref.current;
 }
